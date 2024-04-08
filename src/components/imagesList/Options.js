@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Tooltip from '@mui/material/Tooltip';
 import { IconButton } from '@mui/material';
-import { Delete, Download, MoreVert } from '@mui/icons-material';
+import { Delete, MoreVert } from '@mui/icons-material';
 import deleteDocument from '../../firebase/deleteDocument';
 import deleteFile from '../../firebase/deleteFile';
 import { useAuth } from '../../context/AuthContext';
@@ -36,28 +36,7 @@ export default function Options({ imageId, uid, imageURL }) {
     }
   };
 
-  const handleDownload = async () => {
-    try {
-      const response = await fetch(imageURL);
-      const data = await response.blob();
-      const blob = URL.createObjectURL(data);
-      const link = document.createElement('a');
-      link.href = blob;
-      link.download = imageId;
-      link.click();
-      URL.revokeObjectURL(blob);
-      link.remove();
-    } catch (error) {
-      setAlert({
-        isAlert: true,
-        severity: 'error',
-        message: error.message,
-        timeout: 8000,
-        location: 'main',
-      });
-      console.log(error);
-    }
-  };
+  
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -110,12 +89,7 @@ export default function Options({ imageId, uid, imageURL }) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleDownload}>
-          <ListItemIcon>
-            <Download />
-          </ListItemIcon>
-          Download
-        </MenuItem>
+        
         {currentUser?.uid === uid && (
           <MenuItem onClick={handleDelete}>
             <ListItemIcon>
